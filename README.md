@@ -64,16 +64,22 @@ public interface EmployeeMapper extends DefaultMapper<Employee>, BatchInsertMapp
 
 上面示例一顿操作的结果是，直接完成了crud的后端restful风格的接口，具体如下：
 - 新建接口，接收返回数据格式`json`
+
 POST http://ip:port/employee/create
 - 新建接口，接收数据格式`multipart/form-data`或`queryString`，返回数据格式`json`
+
 POST http://ip:port/employee/create-form
 - 删除接口，接收数据格式`queryString`，返回数据格式`json`
+
 DELETE http://ip:port/employee/remove
 - 更新接口，接收数据格式`queryString`，返回数据格式`json`
+
 PUT http://ip:port/employee/update
 - 单条记录明细接口，接收数据格式`queryString`，返回数据格式`json`
+
 GET http://ip:port/employee/detail
 - 列表查询接口，接收数据格式`queryString`，返回数据格式`json`
+
 GET http://ip:port/employee/list
 
 接下来直接注入上述例子bean使用即可
