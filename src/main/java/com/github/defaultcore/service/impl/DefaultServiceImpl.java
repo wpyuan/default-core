@@ -1,7 +1,6 @@
 package com.github.defaultcore.service.impl;
 
 import com.github.defaultcore.service.DefaultService;
-import com.github.mybatis.crud.condition.EqualTo;
 import com.github.mybatis.crud.mapper.DefaultMapper;
 import com.github.mybatis.crud.structure.Condition;
 import com.github.mybatis.crud.structure.LeftJoin;
@@ -90,8 +89,13 @@ public class DefaultServiceImpl<E> implements DefaultService<E> {
     }
 
     @Override
-    public <R> List<R> select(Class<R> resultTypeClass, LeftJoin<E> leftJoin) {
-        return defaultMapper.select(resultTypeClass, leftJoin);
+    public <R> List<R> list(Class<R> resultTypeClass, LeftJoin<E> leftJoin) {
+        return defaultMapper.list(resultTypeClass, leftJoin);
+    }
+
+    @Override
+    public <R> R detail(Class<R> resultTypeClass, LeftJoin<E> leftJoin) {
+        return defaultMapper.detail(resultTypeClass, leftJoin);
     }
 
     /**

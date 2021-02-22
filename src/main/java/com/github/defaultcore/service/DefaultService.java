@@ -116,5 +116,14 @@ public interface DefaultService<E> {
      * @param leftJoin        查询条件
      * @return 查询结果
      */
-    <R> List<R> select(Class<R> resultTypeClass, LeftJoin<E> leftJoin);
+    <R> List<R> list(Class<R> resultTypeClass, LeftJoin<E> leftJoin);
+
+    /**
+     * 根据条件复杂查询出结果并转换格式
+     *
+     * @param resultTypeClass 返回结果类型class
+     * @param leftJoin        查询条件
+     * @return 查询结果
+     */
+    <R> R detail(Class<R> resultTypeClass, LeftJoin<E> leftJoin);
 }

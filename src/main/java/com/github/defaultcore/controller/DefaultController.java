@@ -16,7 +16,13 @@ public class DefaultController<E> {
     private DefaultService<E> service;
 
     @PostMapping("/create")
-    public ResponseEntity<E> create(E entity) {
+    public ResponseEntity<E> create(@RequestBody E entity) {
+        service.insertSelective(entity);
+        return ResponseEntity.ok(entity);
+    }
+
+    @PostMapping("/create-form")
+    public ResponseEntity<E> createByForm(E entity) {
         service.insertSelective(entity);
         return ResponseEntity.ok(entity);
     }
