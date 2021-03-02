@@ -1,6 +1,7 @@
 package com.github.defaultcore.service.impl;
 
 import com.github.defaultcore.service.DefaultService;
+import com.github.mybatis.crud.mapper.BatchInsertMapper;
 import com.github.mybatis.crud.mapper.DefaultMapper;
 import com.github.mybatis.crud.structure.Condition;
 import com.github.mybatis.crud.structure.LeftJoin;
@@ -20,6 +21,8 @@ public class DefaultServiceImpl<E> implements DefaultService<E> {
 
     @Autowired
     private DefaultMapper<E> defaultMapper;
+    @Autowired
+    private BatchInsertMapper<E> batchInsertMapper;
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
@@ -35,6 +38,18 @@ public class DefaultServiceImpl<E> implements DefaultService<E> {
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public void batchInsert(List<E> list) {
+        batchInsertMapper.batchInsert(list);
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public void batchInsertSelective(List<E> list) {
+        batchInsertMapper.batchInsertSelective(list);
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public int deleteByPrimaryKey(E entity) {
         return defaultMapper.deleteByPrimaryKey(entity);
     }
@@ -43,6 +58,12 @@ public class DefaultServiceImpl<E> implements DefaultService<E> {
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public int delete(E entity) {
         return defaultMapper.delete(this.createEqCondition(entity));
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public int batchDelete(List<E> list) {
+        return defaultMapper.batchDelete(list);
     }
 
     @Override
@@ -61,6 +82,36 @@ public class DefaultServiceImpl<E> implements DefaultService<E> {
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public int updateField(E entity, String... fields) {
         return defaultMapper.updateField(entity, fields);
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public int batchUpdate(List<E> list) {
+        int updateCount = 0;
+        for (E entity : list) {
+            updateCount += defaultMapper.updateByPrimaryKey(entity);
+        }
+        return updateCount;
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public int batchUpdateSelective(List<E> list) {
+        int updateCount = 0;
+        for (E entity : list) {
+            updateCount += defaultMapper.updateByPrimaryKeySelective(entity);
+        }
+        return updateCount;
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public int batchUpdateField(List<E> list, String... fields) {
+        int updateCount = 0;
+        for (E entity : list) {
+            updateCount += defaultMapper.updateField(entity, fields);
+        }
+        return updateCount;
     }
 
     @Override

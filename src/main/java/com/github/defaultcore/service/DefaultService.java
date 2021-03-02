@@ -28,6 +28,20 @@ public interface DefaultService<E> {
     Boolean insertSelective(E entity);
 
     /**
+     * 全字段插入
+     * @param list 实体集合
+     * @return 是否插入成功
+     */
+    void batchInsert(List<E> list);
+
+    /**
+     * 有值的字段插入
+     * @param list 实体集合
+     * @return 是否插入成功
+     */
+    void batchInsertSelective(List<E> list);
+
+    /**
      * 根据主键删除记录
      *
      * @param entity 实体类
@@ -43,6 +57,12 @@ public interface DefaultService<E> {
      */
     int delete(E entity);
 
+    /**
+     * 根据主键批量删除记录
+     * @param list 需删除的记录
+     * @return 影响条数
+     */
+    int batchDelete(List<E> list);
 
     /**
      * 根据主键更新覆盖
@@ -68,6 +88,31 @@ public interface DefaultService<E> {
      * @return 影响条数
      */
     int updateField(E entity, String... fields);
+
+    /**
+     * 批量根据主键更新覆盖
+     *
+     * @param list 实体集合
+     * @return 影响条数
+     */
+    int batchUpdate(List<E> list);
+
+    /**
+     * 批量根据主键更新有值列
+     *
+     * @param list 实体集合
+     * @return 影响条数
+     */
+    int batchUpdateSelective(List<E> list);
+
+    /**
+     * 批量根据主键更新指定列
+     *
+     * @param list 实体集合
+     * @param fields 指定列
+     * @return 影响条数
+     */
+    int batchUpdateField(List<E> list, String... fields);
 
     /**
      * 根据主键查询
