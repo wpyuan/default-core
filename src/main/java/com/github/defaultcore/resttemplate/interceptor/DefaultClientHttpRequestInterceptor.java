@@ -41,7 +41,6 @@ public class DefaultClientHttpRequestInterceptor implements ClientHttpRequestInt
     public static final String FIELD_HANDLER = "handler";
 
     @Override
-    @Transactional(propagation = Propagation.REQUIRES_NEW, noRollbackFor = Exception.class)
     public ClientHttpResponse intercept(HttpRequest request, byte[] bytes,
                                         ClientHttpRequestExecution clientHttpRequestExecution) throws IOException {
         if (log.isTraceEnabled()) {
