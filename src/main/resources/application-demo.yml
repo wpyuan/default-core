@@ -1,0 +1,3 @@
+restTemplate:
+  connectTimeout: ${REST_TEMPLATE_CONNECT-TIMEOUT:60000}
+  readTimeout: ${REST_TEMPLATE_READ-TIMEOUT:60000}

@@ -30,14 +30,12 @@ public interface DefaultService<E> {
     /**
      * 全字段插入
      * @param list 实体集合
-     * @return 是否插入成功
      */
     void batchInsert(List<E> list);
 
     /**
      * 有值的字段插入
      * @param list 实体集合
-     * @return 是否插入成功
      */
     void batchInsertSelective(List<E> list);
 
