@@ -29,7 +29,7 @@ import java.util.Collections;
  * @author wpyuan 2020/04/15 14:53
  */
 @Configuration
-@DependsOn({"defaultClientHttpRequestInterceptor", "restTemplateProperty"})
+@DependsOn({"defaultClientHttpRequestInterceptor"})
 @EnableConfigurationProperties(RestTemplateProperty.class)
 public class RestTemplateConfig {
 
