@@ -8,8 +8,6 @@ import com.github.mybatis.crud.structure.LeftJoin;
 import com.github.mybatis.crud.util.EntityUtil;
 import com.github.mybatis.crud.util.ReflectionUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.lang.reflect.Method;
 import java.util.List;
