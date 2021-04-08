@@ -9,7 +9,7 @@
     </parent>
     <groupId>com.github.wpyuan</groupId>
     <artifactId>default-core</artifactId>
-    <version>0.2.3</version>
+    <version>0.2.4</version>
     <name>default-core</name>
     <description>default-core project for Spring Boot</description>
     <packaging>jar</packaging>
