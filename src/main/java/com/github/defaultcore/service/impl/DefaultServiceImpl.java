@@ -8,6 +8,8 @@ import com.github.mybatis.crud.structure.LeftJoin;
 import com.github.mybatis.crud.util.EntityUtil;
 import com.github.mybatis.crud.util.ReflectionUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.lang.reflect.Method;
 import java.util.List;
@@ -23,56 +25,67 @@ public class DefaultServiceImpl<E> implements DefaultService<E> {
     private BatchInsertMapper<E> batchInsertMapper;
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public Boolean insert(E entity) {
         return defaultMapper.insert(entity) == 1;
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public Boolean insertSelective(E entity) {
         return defaultMapper.insertSelective(entity) == 1;
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void batchInsert(List<E> list) {
         batchInsertMapper.batchInsert(list);
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void batchInsertSelective(List<E> list) {
         batchInsertMapper.batchInsertSelective(list);
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public int deleteByPrimaryKey(E entity) {
         return defaultMapper.deleteByPrimaryKey(entity);
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public int delete(E entity) {
         return defaultMapper.delete(this.createEqCondition(entity));
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public int batchDelete(List<E> list) {
         return defaultMapper.batchDelete(list);
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public int updateByPrimaryKey(E entity) {
         return defaultMapper.updateByPrimaryKey(entity);
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public int updateByPrimaryKeySelective(E entity) {
         return defaultMapper.updateByPrimaryKeySelective(entity);
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public int updateField(E entity, String... fields) {
         return defaultMapper.updateField(entity, fields);
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public int batchUpdate(List<E> list) {
         int updateCount = 0;
         for (E entity : list) {
@@ -82,6 +95,7 @@ public class DefaultServiceImpl<E> implements DefaultService<E> {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public int batchUpdateSelective(List<E> list) {
         int updateCount = 0;
         for (E entity : list) {
@@ -91,6 +105,7 @@ public class DefaultServiceImpl<E> implements DefaultService<E> {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public int batchUpdateField(List<E> list, String... fields) {
         int updateCount = 0;
         for (E entity : list) {
@@ -100,36 +115,43 @@ public class DefaultServiceImpl<E> implements DefaultService<E> {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class, propagation = Propagation.NOT_SUPPORTED)
     public E selectByPrimaryKey(E entity) {
         return defaultMapper.selectByPrimaryKey(entity);
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class, propagation = Propagation.NOT_SUPPORTED)
     public List<E> list(Condition<E> condition) {
         return defaultMapper.list(condition);
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class, propagation = Propagation.NOT_SUPPORTED)
     public List<E> list(E entity) {
         return this.list(this.createEqCondition(entity));
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class, propagation = Propagation.NOT_SUPPORTED)
     public E detail(Condition<E> condition) {
         return defaultMapper.detail(condition);
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class, propagation = Propagation.NOT_SUPPORTED)
     public E detail(E entity) {
         return this.detail(this.createEqCondition(entity));
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class, propagation = Propagation.NOT_SUPPORTED)
     public <R> List<R> list(Class<R> resultTypeClass, LeftJoin<E> leftJoin) {
         return defaultMapper.list(resultTypeClass, leftJoin);
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class, propagation = Propagation.NOT_SUPPORTED)
     public <R> R detail(Class<R> resultTypeClass, LeftJoin<E> leftJoin) {
         return defaultMapper.detail(resultTypeClass, leftJoin);
     }
