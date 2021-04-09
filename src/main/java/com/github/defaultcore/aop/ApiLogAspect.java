@@ -69,7 +69,7 @@ public class ApiLogAspect {
         try {
             result = proceedingJoinPoint.proceed();
             apiLogData = apiLogData.toBuilder().isSuccess(true)
-                    .responseContent(JSON.toJSONString(request))
+                    .responseContent(JSON.toJSONString(result))
                     .build();
         } catch (Throwable e) {
             apiLogData = apiLogData.toBuilder().isSuccess(false)

@@ -17,7 +17,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
-import java.util.Collections;
+import java.util.Arrays;
 
 
 
@@ -43,7 +43,7 @@ public class RestTemplateConfig {
     @Bean
     public RestTemplate restTemplate(RestTemplateProperty restTemplateProperty) {
         FastJsonHttpMessageConverter fastJsonHttpMessageConverter = new FastJsonHttpMessageConverter();
-        fastJsonHttpMessageConverter.setSupportedMediaTypes(Collections.singletonList(MediaType.APPLICATION_JSON_UTF8));
+        fastJsonHttpMessageConverter.setSupportedMediaTypes(Arrays.asList(MediaType.APPLICATION_JSON_UTF8, MediaType.parseMediaType("application/x-www-form-urlencoded; charset=UTF-8")));
         RestTemplate restTemplate = new RestTemplateBuilder()
                 .errorHandler(new DefaultErrorHandler())
                 .interceptors(defaultClientHttpRequestInterceptor)
