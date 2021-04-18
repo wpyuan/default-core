@@ -7,6 +7,7 @@ import com.github.mybatis.crud.structure.Condition;
 import com.github.mybatis.crud.structure.LeftJoin;
 import com.github.mybatis.crud.util.EntityUtil;
 import com.github.mybatis.crud.util.ReflectionUtil;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -129,7 +130,11 @@ public class DefaultServiceImpl<E> implements DefaultService<E> {
     @Override
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.NOT_SUPPORTED)
     public List<E> list(E entity) {
-        return this.list(this.createEqCondition(entity));
+        Condition<E> condition = this.createEqCondition(entity);
+        if (CollectionUtils.isEmpty(condition.getWheres())) {
+            condition.diy(null, null, "1", "=", 1, null);
+        }
+        return this.list(condition);
     }
 
     @Override
