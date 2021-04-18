@@ -1,3 +1,4 @@
 # Auto Configure
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.github.defaultcore.config.EnableLoadBeanAutoConfiguration
+  com.github.defaultcore.config.EnableLoadBeanAutoConfiguration,\
+  com.github.defaultcore.config.DefaultMapperScannerAutoConfiguration
