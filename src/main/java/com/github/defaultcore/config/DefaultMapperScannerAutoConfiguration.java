@@ -20,7 +20,7 @@ import org.springframework.context.annotation.Configuration;
 public class DefaultMapperScannerAutoConfiguration {
 
     @Bean
-    @ConditionalOnMissingBean
+    @ConditionalOnMissingBean(name = "defaultMapperScannerConfigurer")
     public MapperScannerConfigurer defaultMapperScannerConfigurer() {
         MapperScannerConfigurer mapperScannerConfigurer = new MapperScannerConfigurer();
         mapperScannerConfigurer.setBasePackage("com.github.defaultcore.mapper");
