@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.github.defaultcore.annotation.EnableApiLog;
 import com.github.defaultcore.aop.handler.IApiLogDataHandler;
-import com.github.defaultcore.helper.ApplicationContextHepler;
+import com.github.defaultcore.helper.ApplicationContextHelper;
 import com.github.defaultcore.pojo.ApiLogData;
 import com.github.defaultcore.wrapper.ReuseHttpServletRequest;
 import com.github.mybatis.crud.util.EntityUtil;
@@ -171,7 +171,7 @@ public class ApiLogAspect {
      */
     public IApiLogDataHandler getHandler(Class<? extends IApiLogDataHandler> handleClazz) {
         try {
-            return ApplicationContextHepler.getBean(handleClazz);
+            return ApplicationContextHelper.getBean(handleClazz);
         } catch (NoSuchBeanDefinitionException e) {
             return EntityUtil.instance(handleClazz);
         }

@@ -10,12 +10,12 @@ import org.springframework.stereotype.Component;
  * @author wpyuan
  */
 @Component
-public class ApplicationContextHepler implements ApplicationContextAware {
+public class ApplicationContextHelper implements ApplicationContextAware {
     private static ApplicationContext applicationContext;
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        this.applicationContext = applicationContext;
+        ApplicationContextHelper.applicationContext = applicationContext;
     }
 
     public static ApplicationContext getApplicationContext() {

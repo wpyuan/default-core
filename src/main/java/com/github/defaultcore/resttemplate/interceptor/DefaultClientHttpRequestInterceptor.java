@@ -1,23 +1,19 @@
 package com.github.defaultcore.resttemplate.interceptor;
 
 import com.github.defaultcore.aop.handler.IApiLogDataHandler;
-import com.github.defaultcore.helper.ApplicationContextHepler;
+import com.github.defaultcore.helper.ApplicationContextHelper;
 import com.github.defaultcore.pojo.ApiLogData;
 import com.github.mybatis.crud.util.EntityUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
-import org.aspectj.lang.reflect.CodeSignature;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.client.ClientHttpRequestExecution;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -74,15 +70,15 @@ public class DefaultClientHttpRequestInterceptor implements ClientHttpRequestInt
         Long endTime = 0L;
         try {
             response = clientHttpRequestExecution.execute(request, bytes);
-            String responesContent = IOUtils.toString(response.getBody(), StandardCharsets.UTF_8);
+            String responseContent = IOUtils.toString(response.getBody(), StandardCharsets.UTF_8);
             if (log.isTraceEnabled()) {
                 log.trace("=========<<<< end 接口请求<<<< 耗时: {}ms {}/{}, {} \"{}\" 返回body: {}", (endTime - startTime),
                         response.getStatusCode(), response.getStatusText(), request.getMethod(),
-                        request.getURI(), responesContent);
+                        request.getURI(), responseContent);
             }
             apiLogData = apiLogData.toBuilder()
                     .isSuccess(response.getStatusCode().is2xxSuccessful())
-                    .responseContent(responesContent)
+                    .responseContent(responseContent)
                     .responseCode(response.getStatusCode() + "/" + response.getStatusText())
                     .build();
         } catch (Exception e) {
@@ -110,7 +106,7 @@ public class DefaultClientHttpRequestInterceptor implements ClientHttpRequestInt
      */
     public IApiLogDataHandler getHandler(Class<? extends IApiLogDataHandler> handleClazz) {
         try {
-            return ApplicationContextHepler.getBean(handleClazz);
+            return ApplicationContextHelper.getBean(handleClazz);
         } catch (NoSuchBeanDefinitionException e) {
             return EntityUtil.instance(handleClazz);
         }
