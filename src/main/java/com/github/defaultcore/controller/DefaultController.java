@@ -33,8 +33,14 @@ public class DefaultController<E> {
         return ResponseEntity.ok().build();
     }
 
+    @PutMapping("/update-form")
+    public ResponseEntity<E> updateByForm(E entity) {
+        service.updateByPrimaryKey(entity);
+        return ResponseEntity.ok(entity);
+    }
+
     @PutMapping("/update")
-    public ResponseEntity<E> update(E entity) {
+    public ResponseEntity<E> update(@RequestBody E entity) {
         service.updateByPrimaryKey(entity);
         return ResponseEntity.ok(entity);
     }
