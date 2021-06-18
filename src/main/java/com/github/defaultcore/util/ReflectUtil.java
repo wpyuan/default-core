@@ -39,4 +39,25 @@ public class ReflectUtil {
 
         return (Class) params[index];
     }
+
+    /**
+     * 根据class实例化bean
+     * @param eClass bean的class
+     * @param <E> bean类型
+     * @return bean
+     */
+    public static <E> E instance(Class<E> eClass) {
+        if (eClass == null) {
+            return null;
+        }
+
+        E entity = null;
+        try {
+            entity = eClass.newInstance();
+        } catch (InstantiationException | IllegalAccessException e) {
+            log.warn("instance error:".concat(String.valueOf(eClass)), e);
+        }
+
+        return entity;
+    }
 }

@@ -6,8 +6,8 @@ import com.github.defaultcore.annotation.EnableApiLog;
 import com.github.defaultcore.aop.handler.IApiLogDataHandler;
 import com.github.defaultcore.helper.ApplicationContextHelper;
 import com.github.defaultcore.pojo.ApiLogData;
+import com.github.defaultcore.util.ReflectUtil;
 import com.github.defaultcore.wrapper.ReuseHttpServletRequest;
-import com.github.mybatis.crud.util.EntityUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.beanutils.ConvertUtils;
 import org.apache.commons.beanutils.Converter;
@@ -173,7 +173,7 @@ public class ApiLogAspect {
         try {
             return ApplicationContextHelper.getBean(handleClazz);
         } catch (NoSuchBeanDefinitionException e) {
-            return EntityUtil.instance(handleClazz);
+            return ReflectUtil.instance(handleClazz);
         }
     }
 }

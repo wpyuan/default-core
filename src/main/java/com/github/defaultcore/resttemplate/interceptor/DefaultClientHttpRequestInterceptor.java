@@ -3,7 +3,7 @@ package com.github.defaultcore.resttemplate.interceptor;
 import com.github.defaultcore.aop.handler.IApiLogDataHandler;
 import com.github.defaultcore.helper.ApplicationContextHelper;
 import com.github.defaultcore.pojo.ApiLogData;
-import com.github.mybatis.crud.util.EntityUtil;
+import com.github.defaultcore.util.ReflectUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -108,7 +108,7 @@ public class DefaultClientHttpRequestInterceptor implements ClientHttpRequestInt
         try {
             return ApplicationContextHelper.getBean(handleClazz);
         } catch (NoSuchBeanDefinitionException e) {
-            return EntityUtil.instance(handleClazz);
+            return ReflectUtil.instance(handleClazz);
         }
     }
 }
