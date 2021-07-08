@@ -88,12 +88,17 @@ public class DefaultClientHttpRequestInterceptor implements ClientHttpRequestInt
                     .build();
             throw e;
         } finally {
-            apiLogData = apiLogData.toBuilder()
-                    .consumeTime(System.currentTimeMillis() - startTime)
-                    .build();
-            IApiLogDataHandler handler = this.getHandler((Class<? extends IApiLogDataHandler>) MAP_THREAD_LOCAL.get().get(FIELD_HANDLER));
-            handler.handle(apiLogData);
-            MAP_THREAD_LOCAL.remove();
+            try {
+                apiLogData = apiLogData.toBuilder()
+                        .consumeTime(System.currentTimeMillis() - startTime)
+                        .build();
+                IApiLogDataHandler handler = this.getHandler((Class<? extends IApiLogDataHandler>) MAP_THREAD_LOCAL.get().get(FIELD_HANDLER));
+                handler.handle(apiLogData);
+            } catch (Exception e) {
+                log.warn("接口日志记录异常", e);
+            } finally {
+                MAP_THREAD_LOCAL.remove();
+            }
         }
 
         return response;
