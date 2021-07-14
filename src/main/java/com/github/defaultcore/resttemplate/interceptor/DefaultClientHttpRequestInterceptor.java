@@ -6,6 +6,7 @@ import com.github.defaultcore.pojo.ApiLogData;
 import com.github.defaultcore.util.ReflectUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.net.InetAddress;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.Map;
@@ -35,6 +37,7 @@ public class DefaultClientHttpRequestInterceptor implements ClientHttpRequestInt
 
     public static final ThreadLocal<Map<String, Object>> MAP_THREAD_LOCAL = new ThreadLocal<>();
     public static final String FIELD_HANDLER = "handler";
+    public static final String FIELD_ENCODING = "encoding";
 
     @Override
     public ClientHttpResponse intercept(HttpRequest request, byte[] bytes,
@@ -70,7 +73,7 @@ public class DefaultClientHttpRequestInterceptor implements ClientHttpRequestInt
         Long endTime = 0L;
         try {
             response = clientHttpRequestExecution.execute(request, bytes);
-            String responseContent = IOUtils.toString(response.getBody(), StandardCharsets.UTF_8);
+            String responseContent = IOUtils.toString(response.getBody(), (Charset) ObjectUtils.defaultIfNull(MAP_THREAD_LOCAL.get().get(FIELD_ENCODING), StandardCharsets.UTF_8));
             if (log.isTraceEnabled()) {
                 log.trace("=========<<<< end 接口请求<<<< 耗时: {}ms {}/{}, {} \"{}\" 返回body: {}", (endTime - startTime),
                         response.getStatusCode(), response.getStatusText(), request.getMethod(),
