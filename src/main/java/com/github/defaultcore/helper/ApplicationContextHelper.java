@@ -1,6 +1,7 @@
 package com.github.defaultcore.helper;
 
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
@@ -23,10 +24,18 @@ public class ApplicationContextHelper implements ApplicationContextAware {
     }
 
     public static Object getBean(String name) throws BeansException {
-        return applicationContext.getBean(name);
+        try {
+            return applicationContext.getBean(name);
+        } catch (NoSuchBeanDefinitionException e) {
+            return null;
+        }
     }
 
     public static <T> T getBean(Class<T> c){
-        return applicationContext.getBean(c);
+        try {
+            return applicationContext.getBean(c);
+        } catch (NoSuchBeanDefinitionException e) {
+            return null;
+        }
     }
 }
