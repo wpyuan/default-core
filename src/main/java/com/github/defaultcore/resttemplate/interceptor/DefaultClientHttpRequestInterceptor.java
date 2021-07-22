@@ -38,6 +38,7 @@ public class DefaultClientHttpRequestInterceptor implements ClientHttpRequestInt
     public static final ThreadLocal<Map<String, Object>> MAP_THREAD_LOCAL = new ThreadLocal<>();
     public static final String FIELD_HANDLER = "handler";
     public static final String FIELD_ENCODING = "encoding";
+    public static final String FIELD_BODY_MAX_LENGTH = "bodyMaxLength";
 
     @Override
     public ClientHttpResponse intercept(HttpRequest request, byte[] bytes,
@@ -55,6 +56,7 @@ public class DefaultClientHttpRequestInterceptor implements ClientHttpRequestInt
         } catch (Exception e) {
             ;
         }
+        String body = new String(bytes);
         ApiLogData apiLogData = ApiLogData.builder()
                 .apiCode(StringUtils.defaultIfBlank((String) MAP_THREAD_LOCAL.get().get(ApiLogData.FIELD_API_CODE), "缺省"))
                 .apiDesc(StringUtils.defaultIfBlank((String) MAP_THREAD_LOCAL.get().get(ApiLogData.FIELD_API_DESC), "缺省"))
@@ -62,7 +64,7 @@ public class DefaultClientHttpRequestInterceptor implements ClientHttpRequestInt
                 .method(String.valueOf(request.getMethod()))
                 .ip(ip)
                 .requestHeaders(request.getHeaders().toString())
-                .requestBody(new String(bytes))
+                .requestBody(MAP_THREAD_LOCAL.get().get(FIELD_BODY_MAX_LENGTH) == null ? body : body.substring(0, (Integer) MAP_THREAD_LOCAL.get().get(FIELD_BODY_MAX_LENGTH)))
                 .requestContentType(contentType)
                 .isInner(false)
                 .requestDate(new Date())
