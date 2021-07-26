@@ -46,7 +46,7 @@ public class RestTemplateConfig {
         FastJsonHttpMessageConverter fastJsonHttpMessageConverter = new FastJsonHttpMessageConverter();
         fastJsonHttpMessageConverter.setSupportedMediaTypes(Arrays.asList(MediaType.APPLICATION_JSON_UTF8));
         RestTemplate original = new RestTemplate();
-        Set<HttpMessageConverter<?>> httpMessageConverters = new HashSet<>();
+        List<HttpMessageConverter<?>> httpMessageConverters = new ArrayList<>();
         httpMessageConverters.add(new StringHttpMessageConverter(StandardCharsets.UTF_8));
         httpMessageConverters.add(fastJsonHttpMessageConverter);
         httpMessageConverters.add(new FormHttpMessageConverter());
