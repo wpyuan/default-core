@@ -13,13 +13,13 @@ import org.springframework.http.MediaType;
 import org.springframework.http.client.BufferingClientHttpRequestFactory;
 import org.springframework.http.client.OkHttp3ClientHttpRequestFactory;
 import org.springframework.http.converter.FormHttpMessageConverter;
+import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
-import java.util.Arrays;
-
+import java.util.*;
 
 
 /**
@@ -45,12 +45,18 @@ public class RestTemplateConfig {
     public RestTemplate restTemplate(RestTemplateProperty restTemplateProperty) {
         FastJsonHttpMessageConverter fastJsonHttpMessageConverter = new FastJsonHttpMessageConverter();
         fastJsonHttpMessageConverter.setSupportedMediaTypes(Arrays.asList(MediaType.APPLICATION_JSON_UTF8));
+        RestTemplate original = new RestTemplate();
+        Set<HttpMessageConverter<?>> httpMessageConverters = new HashSet<>();
+        httpMessageConverters.add(new StringHttpMessageConverter(StandardCharsets.UTF_8));
+        httpMessageConverters.add(fastJsonHttpMessageConverter);
+        httpMessageConverters.add(new FormHttpMessageConverter());
+        httpMessageConverters.addAll(original.getMessageConverters());
         RestTemplate restTemplate = new RestTemplateBuilder()
                 .errorHandler(new DefaultErrorHandler())
                 .interceptors(defaultClientHttpRequestInterceptor)
                 .setConnectTimeout(Duration.ofMillis(restTemplateProperty.getConnectTimeout()))
                 .setReadTimeout(Duration.ofMillis(restTemplateProperty.getReadTimeout()))
-                .messageConverters(new StringHttpMessageConverter(StandardCharsets.UTF_8), fastJsonHttpMessageConverter, new FormHttpMessageConverter())
+                .messageConverters(httpMessageConverters)
                 .build();
         restTemplate.setRequestFactory(new BufferingClientHttpRequestFactory(new OkHttp3ClientHttpRequestFactory()));
 

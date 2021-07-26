@@ -21,6 +21,7 @@ import java.net.InetAddress;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
@@ -46,6 +47,10 @@ public class DefaultClientHttpRequestInterceptor implements ClientHttpRequestInt
         if (log.isTraceEnabled()) {
             log.trace("=========>>>> start 接口请求>>>> {} \"{}\", headers: {}, bytes: {}", request.getMethod(),
                     request.getURI(), request.getHeaders(), new String(bytes));
+        }
+        if (MAP_THREAD_LOCAL.get() == null) {
+            Map<String, Object> apiInfo = new HashMap<>(1);
+            MAP_THREAD_LOCAL.set(apiInfo);
         }
         String ip = null;
         String contentType = null;
