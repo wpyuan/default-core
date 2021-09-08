@@ -54,11 +54,12 @@ public class RestTemplateConfig {
         RestTemplate restTemplate = new RestTemplateBuilder()
                 .errorHandler(new DefaultErrorHandler())
                 .interceptors(defaultClientHttpRequestInterceptor)
-                .setConnectTimeout(Duration.ofMillis(restTemplateProperty.getConnectTimeout()))
-                .setReadTimeout(Duration.ofMillis(restTemplateProperty.getReadTimeout()))
                 .messageConverters(httpMessageConverters)
                 .build();
-        restTemplate.setRequestFactory(new BufferingClientHttpRequestFactory(new OkHttp3ClientHttpRequestFactory()));
+        OkHttp3ClientHttpRequestFactory okHttp3ClientHttpRequestFactory = new OkHttp3ClientHttpRequestFactory();
+        okHttp3ClientHttpRequestFactory.setConnectTimeout(restTemplateProperty.getConnectTimeout());
+        okHttp3ClientHttpRequestFactory.setReadTimeout(restTemplateProperty.getReadTimeout());
+        restTemplate.setRequestFactory(new BufferingClientHttpRequestFactory(okHttp3ClientHttpRequestFactory));
 
         return restTemplate;
     }
