@@ -170,11 +170,11 @@ public class ApiLogAspect {
      * @return 处理器
      */
     public IApiLogDataHandler getHandler(Class<? extends IApiLogDataHandler> handleClazz) {
-        try {
-            return ApplicationContextHelper.getBean(handleClazz);
-        } catch (NoSuchBeanDefinitionException e) {
-            return ReflectUtil.instance(handleClazz);
+        IApiLogDataHandler apiLogDataHandler = ApplicationContextHelper.getBean(handleClazz);
+        if (apiLogDataHandler != null) {
+            return apiLogDataHandler;
         }
+        return ReflectUtil.instance(handleClazz);
     }
 }
 
