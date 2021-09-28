@@ -69,7 +69,7 @@ public class DefaultClientHttpRequestInterceptor implements ClientHttpRequestInt
                 .method(String.valueOf(request.getMethod()))
                 .ip(ip)
                 .requestHeaders(request.getHeaders().toString())
-                .requestBody(MAP_THREAD_LOCAL.get().get(FIELD_BODY_MAX_LENGTH) == null ? body : body.substring(0, (Integer) MAP_THREAD_LOCAL.get().get(FIELD_BODY_MAX_LENGTH)))
+                .requestBody(MAP_THREAD_LOCAL.get().get(FIELD_BODY_MAX_LENGTH) == null || (Integer) MAP_THREAD_LOCAL.get().get(FIELD_BODY_MAX_LENGTH) >= body.length() ? body : body.substring(0, (Integer) MAP_THREAD_LOCAL.get().get(FIELD_BODY_MAX_LENGTH)))
                 .requestContentType(contentType)
                 .isInner(false)
                 .requestDate(new Date())
