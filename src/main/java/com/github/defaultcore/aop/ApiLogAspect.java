@@ -17,11 +17,11 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.CodeSignature;
-import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
@@ -48,8 +48,8 @@ public class ApiLogAspect {
     @Around(value = "@annotation(enableApiLog)")
     public Object doAround(ProceedingJoinPoint proceedingJoinPoint, EnableApiLog enableApiLog) throws Throwable {
         // 得到 HttpServletRequest
-        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-        HttpServletRequest request = attributes.getRequest();
+        HttpServletRequest request = new ReuseHttpServletRequest(((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest());
+
         // 获取注解信息
         ApiLogData apiLogData = ApiLogData.builder()
                 .apiCode(enableApiLog.code())
@@ -59,7 +59,7 @@ public class ApiLogAspect {
                 .ip(request.getRemoteAddr())
                 .requestHeaders(this.getHeaders(request))
                 .requestQuery(this.getQuery(request))
-                .requestBody(this.getBody(request, (CodeSignature) proceedingJoinPoint.getSignature()))
+                .requestBody(this.getBody(request, proceedingJoinPoint))
                 .requestContentType(request.getContentType())
                 .isInner(true)
                 .requestDate(new Date())
@@ -101,7 +101,7 @@ public class ApiLogAspect {
         return request.getQueryString();
     }
 
-    private String getBody(HttpServletRequest request, CodeSignature codeSignature) {
+    private String getBody(HttpServletRequest request, ProceedingJoinPoint proceedingJoinPoint) {
         String body = null;
         String contentType = request.getContentType();
         if (contentType == null) {
@@ -109,6 +109,7 @@ public class ApiLogAspect {
         }
         if (contentType.contains(MediaType.MULTIPART_FORM_DATA_VALUE) || MediaType.APPLICATION_FORM_URLENCODED_VALUE.equals(contentType)) {
             // 以JSON存储
+            CodeSignature codeSignature = (CodeSignature) proceedingJoinPoint.getSignature();
             Map<String, Object> map = new HashMap<>(1);
             Enumeration<String> paramMap = request.getParameterNames();
             String[] paramNames = codeSignature.getParameterNames();
@@ -152,9 +153,13 @@ public class ApiLogAspect {
                     return null;
                 }
             }, Date.class);
+            Object[] args = proceedingJoinPoint.getArgs();
             for (int i = 0; i < paramNames.length; i++) {
                 if (map.containsKey(paramNames[i])) {
                     map.put(paramNames[i], ConvertUtils.convert(map.get(paramNames[i]), paramType[i]));
+                } else if (MultipartFile.class.isAssignableFrom(args[i].getClass())) {
+                    // 包含文件参数 MultipartFile，只记录文件名
+                    map.put(paramNames[i], ((MultipartFile) args[i]).getOriginalFilename());
                 }
             }
             body = JSON.toJSONString(map);
