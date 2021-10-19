@@ -157,7 +157,7 @@ public class ApiLogAspect {
             for (int i = 0; i < paramNames.length; i++) {
                 if (map.containsKey(paramNames[i])) {
                     map.put(paramNames[i], ConvertUtils.convert(map.get(paramNames[i]), paramType[i]));
-                } else if (MultipartFile.class.isAssignableFrom(args[i].getClass())) {
+                } else if (args[i] != null && MultipartFile.class.isAssignableFrom(args[i].getClass())) {
                     // 包含文件参数 MultipartFile，只记录文件名
                     map.put(paramNames[i], ((MultipartFile) args[i]).getOriginalFilename());
                 }
