@@ -4,6 +4,7 @@ import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
 import com.github.defaultcore.resttemplate.error.handler.DefaultErrorHandler;
 import com.github.defaultcore.resttemplate.interceptor.DefaultClientHttpRequestInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
@@ -41,7 +42,7 @@ public class RestTemplateConfig {
      * 基于OkHttp3配置RestTemplate
      * @return RestTemplate okHttp客户端
      */
-    @Bean
+    @Bean("dcRestTemplate")
     public RestTemplate restTemplate(RestTemplateProperty restTemplateProperty) {
         FastJsonHttpMessageConverter fastJsonHttpMessageConverter = new FastJsonHttpMessageConverter();
         fastJsonHttpMessageConverter.setSupportedMediaTypes(Arrays.asList(MediaType.APPLICATION_JSON_UTF8));
