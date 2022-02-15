@@ -21,7 +21,7 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-web</artifactId>
-            <version>5.3.8</version>
+            <version>5.3.14</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -39,7 +39,7 @@
         <dependency>
             <groupId>org.apache.tomcat.embed</groupId>
             <artifactId>tomcat-embed-core</artifactId>
-            <version>9.0.54</version>
+            <version>9.0.58</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -70,7 +70,7 @@
         <dependency>
             <groupId>com.github.wpyuan</groupId>
             <artifactId>mybatis-crud</artifactId>
-            <version>0.5.2</version>
+            <version>0.6.0</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
