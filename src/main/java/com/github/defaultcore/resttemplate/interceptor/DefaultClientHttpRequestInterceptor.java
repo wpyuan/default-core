@@ -17,6 +17,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.net.InetAddress;
+import java.net.URLDecoder;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
@@ -60,7 +61,7 @@ public class DefaultClientHttpRequestInterceptor implements ClientHttpRequestInt
         } catch (Exception e) {
             ;
         }
-        String body = new String(bytes);
+        String body = URLDecoder.decode(new String(bytes), "UTF-8");
         ApiLogData apiLogData = ApiLogData.builder()
                 .apiCode(StringUtils.defaultIfBlank((String) MAP_THREAD_LOCAL.get().get(ApiLogData.FIELD_API_CODE), "缺省"))
                 .apiDesc(StringUtils.defaultIfBlank((String) MAP_THREAD_LOCAL.get().get(ApiLogData.FIELD_API_DESC), "缺省"))
