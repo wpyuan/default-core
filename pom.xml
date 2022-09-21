@@ -9,7 +9,7 @@
     </parent>
     <groupId>com.github.wpyuan</groupId>
     <artifactId>default-core</artifactId>
-    <version>1.7.1</version>
+    <version>1.7.2</version>
     <name>default-core</name>
     <description>default-core project for Spring Boot</description>
     <packaging>jar</packaging>
@@ -23,11 +23,6 @@
             <artifactId>spring-context</artifactId>
             <version>5.3.14</version>
             <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.aspectj</groupId>
-            <artifactId>aspectjweaver</artifactId>
-            <version>1.9.6</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
